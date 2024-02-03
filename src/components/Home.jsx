@@ -6,17 +6,20 @@ const Home = (props) => {
     const navigate = useNavigate();
   
     const onButtonClick = () => {
-  
+      //Function for later
     }
   
     return(
       <div className='mainContainer'>
+
         <div className={'titleContainer'}>
           <div>Welcome!</div>
         </div>
+
         <div>
           This is the home page.
         </div>
+
         <div className={'buttonContainer'}>
           <input 
             className={'inputButton'}
