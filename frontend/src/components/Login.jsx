@@ -33,8 +33,50 @@ const Login = (props) => {
       return
     }
 
-    //Place for authentication call
+    checkAccountExists(accountExists => {
+      if (accountExists)
+      Login()
+      else 
+      if (window.confirm('An account does not exist with this email address:' + email + '. Do you want to create a new account?')) {
+        Login()
+      }
+    })
 
+  }
+
+  const checkAccountExists = (callBack) => {
+    fetch('http://localhost:3080/check-account', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        },
+      body: JSON.stringify({email})
+    })
+    .then(r => r.json())
+    .then(r => {
+          callBack(r?.userExists)
+    })
+  }
+
+  const logIn = () => {
+    fetch('http://localhost:3080/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email, password})
+    })
+    .then(r => r.json())
+    .then(r => {
+        if ('success' === r.message) {
+          localStorage.setItem('user', JSON.stringify({email, token: r.token}))
+          props.setLoggedIn(true)
+          props.setEmail(email)
+          navigate('/')
+        } else {
+          window.alert('Wrong email or password')
+        }
+    })
   }
 
   return <div className='mainContainer'>
