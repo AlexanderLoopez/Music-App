@@ -26,6 +26,7 @@ const Login = (props) => {
 
     if ('' === password) {
       setPassword('Please enter a password')
+      return
     }
 
     if (password.length < 7) {
@@ -35,10 +36,10 @@ const Login = (props) => {
 
     checkAccountExists(accountExists => {
       if (accountExists)
-      Login()
+      logIn()
       else 
       if (window.confirm('An account does not exist with this email address:' + email + '. Do you want to create a new account?')) {
-        Login()
+        logIn()
       }
     })
 
@@ -79,7 +80,8 @@ const Login = (props) => {
     })
   }
 
-  return <div className='mainContainer'>
+  return (
+      <div className='mainContainer'>
       <div className='tittleContainer'>
         <div>Login</div>
       </div>
@@ -110,7 +112,7 @@ const Login = (props) => {
           value={'Log in'}/>
       </div>
     </div>
-  
+  )
 }
 
 export default Login;

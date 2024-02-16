@@ -14,7 +14,8 @@ const Home = (props) => {
       }
     }
   
-    return <div className='mainContainer'>
+    return (
+      <div className='mainContainer'>
         <div className={'titleContainer'}>
           <div>Welcome!</div>
         </div>
@@ -33,6 +34,7 @@ const Home = (props) => {
         </div>
 
       </div>
+    )
   }
   
   export default Home
