@@ -1,21 +1,21 @@
-import express from 'express'
-import bcrypt from 'bcrypt'
-var cors = require('cors')
-const jwt = require("jsonwebtoken")
-var low = require("lowdb");
-var FileSync = require("lowdb/adapters/FileSync");
+import express, { json as _json, urlencoded } from 'express';
+import { compare, hash as _hash } from 'bcrypt';
+import cors from 'cors';
+import { sign, verify } from "jsonwebtoken";
+import low from "lowdb";
+import FileSync from "lowdb/adapters/FileSync";
 var adapter = new FileSync("./database.json");
 var db = low(adapter);
 
 //Express app
 const app = express()
 
-//JWT secret key. Isolated by using env variables.
+//JWT secret key. Should isolated by using env variables.
 const jwtSecretKey = 'dsfdsfsdfdsvcsvdfgefg'
 
 app.use(cors())
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(_json());
+app.use(urlencoded({ extended: true }));
 
 // Route for the API
 app.get('/', (_req, res) => {
@@ -29,7 +29,7 @@ app.post('/auth', (req, res) => {
   const user = db.get('users').value().filter(user => email === user.email)
 
   if (user.lenght === 1) {
-    bcrypt.compare(password, user[0].password, function (_err, result){
+    compare(password, user[0].password, function (_err, result){
       if (!result) {
         return res.status(401).json({ message: 'Invalid password' });
       } else {
@@ -38,13 +38,13 @@ app.post('/auth', (req, res) => {
           signInTime: Date.now(),
         };
 
-        const token = jwt.sign(loginData, jwtSecretKey);
+        const token = sign(loginData, jwtSecretKey);
         res.status(200).json({ message: 'success', token });
       }
     });
 
   } else if (user.lenght === 0){
-    bcrypt.hash(password, 10, function (_err, hash) {
+    _hash(password, 10, function (_err, hash) {
       console.log({ email, password: hash })
       db.get('users').push({ email, password: hash }).write()
 
@@ -53,7 +53,7 @@ app.post('/auth', (req, res) => {
         signInTime: Date.now(),
       };
 
-      const token = jwt.sign(loginData, jwtSecretKey);
+      const token = sign(loginData, jwtSecretKey);
       res.status(200).json({ message: 'succes', token });
     });
 
@@ -66,7 +66,7 @@ app.post('/verify', (req, res) => {
   const tokenHeaderKey = 'jwt-token';
   const authToken = req.headers[ttokenHeaderKey];
   try {
-    const verified = jwt.verify(authToken, jwtSecretKey);
+    const verified = verify(authToken, jwtSecretKey);
     if (verified) {
       return res
         .status(200)

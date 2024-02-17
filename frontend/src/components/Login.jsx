@@ -45,8 +45,8 @@ const Login = (props) => {
 
   }
 
-  const checkAccountExists = (callBack) => {
-    fetch('http://localhost:3080/check-account', {
+  const checkAccountExists = async (callBack) => {
+     await fetch('http://localhost:3080/check-account', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
