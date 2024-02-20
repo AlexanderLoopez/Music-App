@@ -36,7 +36,7 @@ const Login = (props) => {
 
     checkAccountExists(accountExists => {
       if (accountExists)
-      logIn()
+        logIn()
       else 
       if (window.confirm('An account does not exist with this email address:' + email + '. Do you want to create a new account?')) {
         logIn()
@@ -45,8 +45,8 @@ const Login = (props) => {
 
   }
 
-  const checkAccountExists = async (callBack) => {
-     await fetch('http://localhost:3080/check-account', {
+  const checkAccountExists = (callBack) => {
+    fetch('http://localhost:3080/check-account', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -97,6 +97,7 @@ const Login = (props) => {
       <br />
       <div className={'inputContainer'}>
         <input 
+          type='password'
           value={password}
           placeholder='Enter your password here'
           onChange={ev => setPassword(ev.target.value)}
@@ -115,4 +116,4 @@ const Login = (props) => {
   )
 }
 
-export default Login;
+export default Login

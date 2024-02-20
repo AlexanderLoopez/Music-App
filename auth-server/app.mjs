@@ -64,7 +64,7 @@ app.post('/auth', (req, res) => {
 //Verify enpoint
 app.post('/verify', (req, res) => {
   const tokenHeaderKey = 'jwt-token';
-  const authToken = req.headers[ttokenHeaderKey];
+  const authToken = req.headers[tokenHeaderKey];
   try {
     const verified = verify(authToken, jwtSecretKey);
     if (verified) {
@@ -75,7 +75,7 @@ app.post('/verify', (req, res) => {
       return res.status(401).json({ status: 'invalid auth', message: 'error' });
     } 
   } catch (error) {
-    return res.status(401),json({ status: 'invalid auth', message: 'error' });
+    return res.status(401),_json({ status: 'invalid auth', message: 'error' });
   }
 
 })
